@@ -24,4 +24,4 @@ Extend output to the display left of the main display:
 
 Extend it to the right:
 
-    python main.py e r
+    python main.py c
