@@ -12,7 +12,7 @@ If you need any more elaborate xrandr functions, you better jus use xrandr.
 
 ## Usage
 
-Clone output:
+Clone output among all connected displays:
 
     python main.py c
 
