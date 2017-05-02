@@ -92,8 +92,7 @@ class Controller:
         cmd += "--pos 0x0"
 
         # Turn off output of all other displays
-        gen = (x for x in self._displays if x != disp)
-        for disp in gen:
+        for disp in (x for x in self._displays if x != disp):
             cmd += "--output " + str(disp) + " --off"
 
         cmd.call()
@@ -129,7 +128,7 @@ class Controller:
         Assumes that exactly two displays are connected.
         The resolution is determined automatically by xrandr.
         """
-        if len(self._displays) != 2:
+        if len(self._displays) < 2:
             print("Bad number of displays.")
             sys.exit(1)
 
@@ -151,14 +150,14 @@ class Controller:
             cmd += "--pos 0x0"
 
             # Set output for remaining display
-            for disp in self._displays:
-                if disp != self._builtIn:
-                    cmd += "--output " + str(disp)
-                    cmd += "--auto"
-                    cmd += "--rotate normal"
-                    cmd += "--" + direction + "-of " + str(self._builtIn)
-
-                    break
+            prev = self._builtIn
+            for disp in (x for x in self._displays if x != self._builtIn):
+                cmd += "--output " + str(disp)
+                cmd += "--auto"
+                cmd += "--rotate normal"
+                cmd += "--" + direction + "-of " + str(prev)
+                
+                prev = disp
 
             cmd.call()
             self.print_status("Extended viewport.")
