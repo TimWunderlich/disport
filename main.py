@@ -136,6 +136,13 @@ class Controller:
             cmd.call()
             self.print_status("Extended viewport.")
 
+    def list_displays(self):
+        """List connected displays and their available resolutions."""
+        for display in self._displays:
+            print(display)
+            for resolution in display.get_resolutions():
+                print("  " + str(resolution))
+
 
 def main():
     """Parse arguments and call the respective methods."""
@@ -146,16 +153,19 @@ def main():
         args = sys.argv[1:]
         mode = args[0]
         c = Controller()
-        # Clone viewport.
+        # Clone viewport
         if mode in ("clone", "c"):
             c.clone_viewport()
-        # Extend viewport.
+        # Extend viewport
         elif mode in ("extend", "e"):
             c.extend_viewport(args[1])
-        # Reduce viewport to single display.
+        # Reduce viewport to single display
         elif mode in ("solo", "s"):
             c.reduce_viewport(c.get_built_in_display())
-        # Unknown command, so quit program.
+        # List displays
+        elif mode in ("list", "l"):
+            c.list_displays()
+        # Unknown command, so quit program
         else:
             sys.exit(1)
 
