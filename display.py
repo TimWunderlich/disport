@@ -6,12 +6,10 @@ class Resolution:
     """Stores width and height of a certain resolution.
 
     Provides the following methods:
-
         1) get_x()
         2) get_y()
 
     Provides the following operators:
-
         1) str(resolution)
         2) resolution1 < resolution2
         3) resolution1 > resolution2
@@ -61,7 +59,6 @@ class Resolution:
                 return self._y < other.get_y()
             else:
                 return False
-
         else:
             return NotImplemented
 
@@ -77,10 +74,8 @@ class Resolution:
                 return self._y > other.get_y()
             else:
                 return False
-
         else:
             return NotImplemented
-
 
     def __eq__(self, other):
         """Check if own dimensions are equal to another resolution."""
@@ -89,14 +84,12 @@ class Resolution:
         else:
             return NotImplemented
 
-
     def __nq__(self, other):
         """Check if own dimenions are unequal to another resolution."""
         if isinstance(other, Resolution):
             return not(self == other)
         else:
             return NotImplemented
-
 
     def __le__(self, other):
         """Check if own dimenions are smaller
@@ -106,7 +99,6 @@ class Resolution:
             return self < other or self == other
         else:
             return NotImplemented
-
 
     def __ge__(self, other):
         """Check if own dimenions are smaller
@@ -145,16 +137,13 @@ class Display:
         # Apply all legitimate resolutions.
         self._resolutions = (res for res in resolutions if res.get_x() > 0)
 
-
     def get_resolutions(self):
         """Returns list of available resolutions."""
         return self._resolutions
 
-
     def __str__(self):
         """Returns the name of the display as a string."""
         return self._name
-
 
     def __contains__(self, resolution):
         """Returns True if resolution is available to display."""
@@ -162,7 +151,6 @@ class Display:
             return resolution in self._resolutions
         else:
             return NotImplemented
-    
 
     def __and__(self, other):
         """Returns list of resolutions shared
@@ -173,7 +161,6 @@ class Display:
         else:
             return NotImplemented
 
-
     def __eq__(self, other):
         """Returns True if the names of
         display1 and display2 are identical.
@@ -182,7 +169,6 @@ class Display:
             return self._name == str(other)
         else:
             return NotImplemented
-
 
     def __nq__(self, other):
         """Returns True if the names of
