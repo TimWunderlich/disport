@@ -8,7 +8,7 @@ Provides easy access to the most important xrandr functions (at least to the one
 * Restrict the output to the main display
 * Extend the viewport across several displays
 
-If you need any more elaborate xrandr functions, you better jus use xrandr.
+If you need any more elaborate xrandr functions, you better just use xrandr.
 
 ## Usage
 
