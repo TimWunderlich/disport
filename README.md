@@ -10,27 +10,31 @@ Provides easy access to the most important xrandr functions (at least to the one
 
 If you need any more elaborate xrandr functions, you better just use xrandr.
 
+## Install
+
+    pip install disport
+
 ## Usage
 
 List connected displays and their resolutions:
 
-    python main.py --list
+    disport --list
 
 Clone output among all connected displays:
 
-    python main.py --clone
+    disport --clone
 
 Restrict output to main display:
 
-    python main.py --solo
+    disport --solo
 
 Extend output to the display left of the main display:
 
-    python main.py --extend left
+    disport --extend left
 
 Extend it to the right:
 
-    python main.py --extend right
+    disport --extend right
 
 ## To-do
 
