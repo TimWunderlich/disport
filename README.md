@@ -14,23 +14,23 @@ If you need any more elaborate xrandr functions, you better just use xrandr.
 
 List connected displays and their resolutions:
 
-    python main.py list
+    python main.py --list
 
 Clone output among all connected displays:
 
-    python main.py clone
+    python main.py --clone
 
 Restrict output to main display:
 
-    python main.py solo
+    python main.py --solo
 
 Extend output to the display left of the main display:
 
-    python main.py extend left
+    python main.py --extend left
 
 Extend it to the right:
 
-    python main.py extend right
+    python main.py --extend right
 
 ## To-do
 
