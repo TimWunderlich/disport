@@ -2,8 +2,9 @@
 # -*- coding: utf-8 -*-
 
 import sys
-import display
-from command import Command
+from .command import Command
+from .display import Display
+from .display import Resolution
 
 
 class Controller:
@@ -35,12 +36,12 @@ class Controller:
                 for resLine in output[i+1:]:
                     if resLine.startswith(" "):
                         resLine = resLine.strip(" ").split(" ")[0]
-                        res = display.Resolution(resLine)
+                        res = Resolution(resLine)
                         resolutions.append(res)
                     else:
                         break
                 # Store display data
-                disp = display.Display(displayName, resolutions)
+                disp = Display(displayName, resolutions)
                 self._displays.append(disp)
         # Assume that the first display listed by xrandr is the main one.
         self._builtIn = self._displays[0]
@@ -48,11 +49,11 @@ class Controller:
     def get_common_resolutions(self):
         """Return list of resolutions shared by all connected displays."""
         # Create copy of first display
-        dummy = display.Display("Dummy", self._builtIn.get_resolutions())
+        dummy = Display("Dummy", self._builtIn.get_resolutions())
         # Iterate over remaining displays
         for disp in self._displays[1:]:
             # Create dummy display with intersection of all resolutions
-            dummy = display.Display("Dummy", dummy & disp)
+            dummy = Display("Dummy", dummy & disp)
         return dummy.get_resolutions()
 
     def print_status(self, message):
@@ -155,13 +156,14 @@ class Controller:
 
 def main():
     """Parse arguments and call the respective methods."""
+    c = Controller()
     # Quit program if too few arguments are provided.
     if len(sys.argv) < 2:
+        c.print_help()
         sys.exit(1)
     else:
         args = sys.argv[1:]
         mode = args[0]
-        c = Controller()
         # Clone output
         if mode in ("--clone", "-c"):
             c.clone_output()
@@ -181,8 +183,3 @@ def main():
             print("Unknown option:", mode)
             print("Use option -h (--help) to list available options.")
             sys.exit(1)
-
-
-if __name__ == "__main__":
-
-    main()
