@@ -16,9 +16,9 @@ class Controller:
         1) get_common_resolutions()
         2) print_status()
         3) get_built_in_display()
-        4) reduce_viewport(display)
-        5) clone_viewport()
-        6) extend_viewport(diretion)
+        4) reduce_output(display)
+        5) clone_output()
+        6) extend_output(diretion)
     """
     def __init__(self):
         """Get connected displays and their resolutions."""
@@ -66,8 +66,8 @@ class Controller:
         """Return built-in display."""
         return self._builtIn
 
-    def reduce_viewport(self, disp):
-        """Reduce the viewport to single display.
+    def reduce_output(self, disp):
+        """Reduce the output to single display.
         The resolution is determined automatically by xrandr.
         """
         # Set output to display disp
@@ -81,10 +81,10 @@ class Controller:
         for disp in (x for x in self._displays if x != disp):
             cmd += "--output " + str(disp) + " --off"
         cmd.call()
-        self.print_status("Reduced viewport.")
+        self.print_status("Reduced output.")
 
-    def clone_viewport(self):
-        """Clone viewport to all registered displays.
+    def clone_output(self):
+        """Clone output to all registered displays.
         Use the highest shared resolution.
         """
         if len(self._displays) < 2:
@@ -100,15 +100,15 @@ class Controller:
                 cmd += "--rotate normal"
                 cmd += "--pos 0x0"
             cmd.call()
-            self.print_status("Cloned viewport.")
+            self.print_status("Cloned output.")
 
-    def extend_viewport(self, direction):
-        """Extend the viewport to displays left or right
+    def extend_output(self, direction):
+        """Extend the output to displays left or right
         of the built-in display.
         The resolution is determined automatically by xrandr.
         """
         if len(self._displays) < 2:
-            print("Cannot extend viewport: Not enough displays connected.")
+            print("Cannot extend output: Not enough displays connected.")
             sys.exit(1)
         else:
             # Normalize direction
@@ -117,7 +117,8 @@ class Controller:
             elif direction in ("left", "l"):
                 direction = "left"
             else:
-                print("Bad direction.")
+                print("Unknown direction:", direction)
+                print("Choose either l (left) or r (right).")
                 sys.exit(1)
             # Set output for built-in display
             cmd = Command("xrandr")
@@ -134,7 +135,7 @@ class Controller:
                 cmd += "--" + direction + "-of " + str(prev)
                 prev = disp
             cmd.call()
-            self.print_status("Extended viewport.")
+            self.print_status("Extended output.")
 
     def list_displays(self):
         """List connected displays and their available resolutions."""
@@ -143,6 +144,14 @@ class Controller:
             for resolution in display.get_resolutions():
                 print("  " + str(resolution))
 
+    def print_help(self):
+        """List available options."""
+        print("  -c, --clone\tClone output to external display")
+        print("  -e, --extend")
+        print("\tleft\tExtend output to the left")
+        print("\tright\tExtend output to the right")
+        print("  -s, --solo\tReduce output to primary display")
+        print("  -l, --list\tList available displays")
 
 def main():
     """Parse arguments and call the respective methods."""
@@ -153,20 +162,24 @@ def main():
         args = sys.argv[1:]
         mode = args[0]
         c = Controller()
-        # Clone viewport
-        if mode in ("clone", "c"):
-            c.clone_viewport()
-        # Extend viewport
-        elif mode in ("extend", "e"):
-            c.extend_viewport(args[1])
-        # Reduce viewport to single display
-        elif mode in ("solo", "s"):
-            c.reduce_viewport(c.get_built_in_display())
+        # Clone output
+        if mode in ("--clone", "-c"):
+            c.clone_output()
+        # Extend output
+        elif mode in ("--extend", "-e"):
+            c.extend_output(args[1])
+        # Reduce output to single display
+        elif mode in ("--solo", "--single", "-s"):
+            c.reduce_output(c.get_built_in_display())
         # List displays
-        elif mode in ("list", "l"):
+        elif mode in ("--list", "-l"):
             c.list_displays()
+        elif mode in ("--help", "-h"):
+            c.print_help()
         # Unknown command, so quit program
         else:
+            print("Unknown option:", mode)
+            print("Use option -h (--help) to list available options.")
             sys.exit(1)
 
 
