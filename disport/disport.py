@@ -113,13 +113,17 @@ class Controller:
             sys.exit(1)
         else:
             # Normalize direction
-            if direction in ("right", "r"):
-                direction = "right"
-            elif direction in ("left", "l"):
-                direction = "left"
+            if direction in ("right-of", "right", "r"):
+                direction = "right-of"
+            elif direction in ("left-of", "left", "l"):
+                direction = "left-of"
+            elif direction in ("above", "above"):
+                direction = "above"
+            elif direction in ("below", "b"):
+                direction = "below"
             else:
                 print("Unknown direction:", direction)
-                print("Choose either l (left) or r (right).")
+                print("Choose either l (left), r (right), a (above) or b (below).")
                 sys.exit(1)
             # Set output for built-in display
             cmd = Command("xrandr")
@@ -133,7 +137,7 @@ class Controller:
                 cmd += "--output " + str(disp)
                 cmd += "--auto"
                 cmd += "--rotate normal"
-                cmd += "--" + direction + "-of " + str(prev)
+                cmd += "--" + direction + " " + str(prev)
                 prev = disp
             cmd.call()
             self.print_status("Extended output.")
