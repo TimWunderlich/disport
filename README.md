@@ -36,6 +36,15 @@ Extend it to the right:
 
     disport --extend right
 
+Extend it above:
+
+    disport --extend above
+
+Extend it below:
+
+    disport --extend below
+
+
 ## To-do
 
 * Let the user specify the display for the restrict mode
